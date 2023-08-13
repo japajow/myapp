@@ -1,26 +1,50 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <h2>Lista de Usuarios</h2>
+  <div>
+   <ul>
+    <li v-for="user in users.user" :key="user.id">{{ user.firstname }} {{ user.lastname }}</li>
+   </ul>
+  </div>
 </template>
 
-<script>
-import HelloWorld from './components/HelloWorld.vue'
+<script setup>
+// import { http } from './services/http.js'
+// import HelloWorld from './components/HelloWorld.vue';
+import axios from 'axios'
+import { onMounted,reactive } from 'vue';
+// export default {
+//   name: 'App',
+//   component: {
+//     HelloWorld
+//   },
+//   data() {
+//     return {
+//       users: []
+//     }
+//   },
+//   async mounted() {
+//     try {
+//       const { data } = await http.get('http://localhost:8000/api/users')
 
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
+//       this.users = data
+//     } catch (error) {
+//       console.log(error)
+//     }
+//   }
+// }
+
+// trabalhando com composition API
+ let users = reactive({user:[]})
+
+onMounted(async () => {
+  try {
+    const {data} = await axios.get('http://localhost:8000/api/users')
+    console.log(data);
+     users.user = data
+  } catch (error) {
+    console.log(error);
   }
-}
+})
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+
